@@ -60,7 +60,6 @@ Po starcie dokumentacja OpenAPI będzie dostępna pod:
 - `http://127.0.0.1:8000/docs`
 
 ## Co jest gotowe
-ghjhjg
 - FastAPI app initialization (`app/main.py`)
 - Wspólny router API (`app/api/router.py`)
 - Zależność DI dla sesji DB (`app/api/deps.py`)
