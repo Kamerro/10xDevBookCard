@@ -1,7 +1,7 @@
 # Tech Stack – BookCards (MVP)
 
 ## 1. Język i runtime
-- Language: Python 3.12
+- Language: Python 3.13.4
 - Typowanie: standard typing + Pydantic
 - Styl: prosty, czytelny, bez nadmiarowych abstrakcji
 

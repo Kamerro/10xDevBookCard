@@ -1,0 +1,31 @@
+---
+trigger: model_decision
+globs: "app/services/ai_service.py"
+---
+## AI Integration Rules
+
+### Execution Model
+- AI runs only in background tasks
+- AI is triggered per book
+- Minimum 3 notes required
+- Never block user requests
+
+### Responsibilities
+- Aggregate notes
+- Call external LLM via HTTP
+- Persist results in DB
+- Return structured data only
+
+### Output Structure
+- summary: str
+- duplicates: list[str]
+- importance_ranking: list[int]
+
+### Testing
+- AI must be mockable
+- No real API calls in tests
+
+### Forbidden
+- AI logic in API routes
+- Prompt configuration in UI
+- Sync HTTP calls
