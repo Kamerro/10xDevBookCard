@@ -1,10 +1,11 @@
 from __future__ import annotations
 
 import json
-import os
 from typing import Any
 
 import httpx
+
+from app.core.settings import settings
 
 
 class OpenRouterError(Exception):
@@ -32,26 +33,21 @@ class OpenRouterInvalidResponseError(OpenRouterError):
 
 
 def _get_openrouter_base_url() -> str:
-    return os.environ.get("OPENROUTER_BASE_URL", "https://openrouter.ai/api/v1")
+    return settings.openrouter_base_url
 
 
 def _get_openrouter_model() -> str:
-    return os.environ.get("OPENROUTER_MODEL", "openai/gpt-4o-mini")
+    return settings.openrouter_model
 
 
 def _get_timeout_seconds() -> float:
-    raw = os.environ.get("OPENROUTER_TIMEOUT_SECONDS", "30")
-    try:
-        return float(raw)
-    except ValueError:
-        return 30.0
+    return settings.openrouter_timeout_seconds
 
 
 def _get_api_key() -> str:
-    key = os.environ.get("OPENROUTER_API_KEY", "")
-    if not key:
+    if not settings.openrouter_api_key:
         raise OpenRouterAuthError("OPENROUTER_API_KEY is not set")
-    return key
+    return settings.openrouter_api_key
 
 
 async def chat_completion(
