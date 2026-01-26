@@ -1,0 +1,28 @@
+{% extends "base.html" %}
+
+{% block content %}
+  <div>
+    <h1>{{ selected_book.title }}</h1>
+    <p>{{ selected_book.author }}</p>
+  </div>
+
+  <div>
+    <form method="post" action="/books/{{ selected_book.id }}/notes">
+      <div>
+        <textarea name="content" rows="4"></textarea>
+      </div>
+      {% if error_add_note %}
+        <p class="error">{{ error_add_note }}</p>
+      {% endif %}
+      <button type="submit">Dodaj notatkę</button>
+    </form>
+  </div>
+
+  <div>
+    {% for note in notes %}
+      {% include "partials/_note_card.html" %}
+    {% else %}
+      <p>Dodaj pierwszą notatkę.</p>
+    {% endfor %}
+  </div>
+{% endblock %}

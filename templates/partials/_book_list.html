@@ -1,0 +1,17 @@
+{% if books|length == 0 %}
+  <p>Dodaj pierwszą książkę.</p>
+{% else %}
+  <ul>
+    {% for book in books %}
+      <li>
+        <a href="/books/{{ book.id }}" class="book-item{% if selected_book and selected_book.id == book.id %} active{% endif %}">
+          <div>{{ book.title }}</div>
+          <div>{{ book.author }}</div>
+          {% if book.ai_status == "processing" %}
+            <span class="badge processing">processing</span>
+          {% endif %}
+        </a>
+      </li>
+    {% endfor %}
+  </ul>
+{% endif %}

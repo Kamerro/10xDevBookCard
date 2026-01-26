@@ -1,0 +1,25 @@
+<div class="card">
+  <div class="card-header">
+    <strong>Note #{{ note.number }}</strong>
+    <div class="actions">
+      <a href="/books/{{ selected_book.id }}?edit_note_id={{ note.id }}">Edytuj</a>
+    </div>
+  </div>
+  {% if edit_note_id and edit_note_id == note.id %}
+    <form method="post" action="/notes/{{ note.id }}">
+      <input type="hidden" name="book_id" value="{{ selected_book.id }}" />
+      <div>
+        <textarea name="content" rows="4">{{ note.content }}</textarea>
+      </div>
+      {% if error_edit_note %}
+        <p class="error">{{ error_edit_note }}</p>
+      {% endif %}
+      <button type="submit">Zapisz</button>
+      <a href="/books/{{ selected_book.id }}">Anuluj</a>
+    </form>
+  {% else %}
+    <div>
+      <p>{{ note.content }}</p>
+    </div>
+  {% endif %}
+</div>
