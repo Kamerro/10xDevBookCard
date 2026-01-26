@@ -1,0 +1,50 @@
+---
+trigger: always_on
+---
+## Purpose
+Context7 provides up-to-date official documentation and code examples.
+Use it selectively and efficiently.
+
+## When to Use Context7
+Only invoke the Context7 MCP server when ALL of the following are true:
+- The task involves framework, library, or API documentation
+- The information may be version-specific or recently changed
+- The answer cannot be reliably produced from general knowledge
+
+Examples:
+- Framework configuration (Next.js, React, AWS SDKs)
+- Library APIs and flags
+- Version-specific behaviors or breaking changes
+
+## When NOT to Use Context7
+Do NOT invoke Context7 when:
+- Answering general programming logic questions
+- Writing business logic or algorithms
+- Refactoring code without needing documentation
+- The same Context7 query was already used in this conversation
+
+## Loop & Repetition Mitigation
+- Never invoke Context7 more than once for the same library and version.
+- If Context7 returns insufficient or empty data:
+  - Continue reasoning using existing knowledge
+  - Do NOT retry the same Context7 query
+- Do NOT rephrase prompts solely to trigger Context7 again.
+
+## Response Discipline
+- Summarize Context7 results once.
+- Do not restate documentation verbatim.
+- Do not repeat the same explanation in multiple messages.
+
+## Failure Handling
+If Context7 fails or times out:
+- Acknowledge briefly that docs could not be fetched
+- Proceed without retrying Context7
+
+## Priority
+Context7 is a supporting source, not the primary reasoning engine.
+Use it only to validate or supplement answers.
+
+## Hard Constraint
+For any single user request:
+- Context7 may be invoked at most twice.
+- No follow-up Context7 calls are allowed unless the user explicitly asks.

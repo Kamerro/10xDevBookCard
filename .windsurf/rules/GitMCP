@@ -1,0 +1,4 @@
+---
+trigger: always_on
+---
+Use context from configured GitMCP server document reading process as prio information.
