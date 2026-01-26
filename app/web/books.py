@@ -1,7 +1,7 @@
 from __future__ import annotations
 
 from fastapi import APIRouter, Form, Request
-from fastapi.responses import HTMLResponse, RedirectResponse
+from fastapi.responses import HTMLResponse, RedirectResponse, Response
 from fastapi.templating import Jinja2Templates
 
 templates = Jinja2Templates(directory="templates")
@@ -17,6 +17,7 @@ async def books_index(request: Request) -> HTMLResponse:
         "selected_book": None,
         "notes": [],
         "edit_note_id": None,
+        "error_add_book": None,
     }
     return templates.TemplateResponse("books/index.html", context)
 
@@ -29,18 +30,40 @@ async def books_detail(request: Request, book_id: str) -> HTMLResponse:
         "selected_book": {"id": book_id, "title": "", "author": ""},
         "notes": [],
         "edit_note_id": request.query_params.get("edit_note_id"),
+        "error_add_book": None,
         "error_add_note": None,
         "error_edit_note": None,
     }
     return templates.TemplateResponse("books/detail.html", context)
 
 
+@router.post("/books", response_model=None)
+async def create_book(
+    request: Request,
+    title: str = Form(""),
+    author: str = Form(""),
+) -> Response:
+    if not title.strip() or not author.strip():
+        context = {
+            "request": request,
+            "books": [],
+            "selected_book": None,
+            "notes": [],
+            "edit_note_id": None,
+            "error_add_book": "Tytuł i autor są wymagane.",
+        }
+        return templates.TemplateResponse("books/index.html", context)
+
+    return RedirectResponse(url="/books", status_code=303)
+
+
 @router.post("/books/{book_id}/notes")
+@router.post("/books/{book_id}/notes", response_model=None)
 async def create_note(
     request: Request,
     book_id: str,
     content: str = Form(""),
-) -> RedirectResponse | HTMLResponse:
+) -> Response:
     if not content.strip():
         context = {
             "request": request,
@@ -48,6 +71,7 @@ async def create_note(
             "selected_book": {"id": book_id, "title": "", "author": ""},
             "notes": [],
             "edit_note_id": None,
+            "error_add_book": None,
             "error_add_note": "Treść notatki nie może być pusta.",
             "error_edit_note": None,
         }
@@ -56,13 +80,13 @@ async def create_note(
     return RedirectResponse(url=f"/books/{book_id}", status_code=303)
 
 
-@router.post("/notes/{note_id}")
+@router.post("/notes/{note_id}", response_model=None)
 async def update_note(
     request: Request,
     note_id: str,
     book_id: str = Form(""),
     content: str = Form(""),
-) -> RedirectResponse | HTMLResponse:
+) -> Response:
     if not book_id:
         return RedirectResponse(url="/books", status_code=303)
 
@@ -73,6 +97,7 @@ async def update_note(
             "selected_book": {"id": book_id, "title": "", "author": ""},
             "notes": [],
             "edit_note_id": note_id,
+            "error_add_book": None,
             "error_add_note": None,
             "error_edit_note": "Treść notatki nie może być pusta.",
         }

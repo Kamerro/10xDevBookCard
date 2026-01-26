@@ -1,3 +1,16 @@
+<form method="post" action="/books">
+  <div>
+    <textarea name="title" rows="1" placeholder="Tytuł"></textarea>
+  </div>
+  <div>
+    <textarea name="author" rows="1" placeholder="Autor"></textarea>
+  </div>
+  {% if error_add_book %}
+    <p class="error">{{ error_add_book }}</p>
+  {% endif %}
+  <button type="submit">Dodaj książkę</button>
+</form>
+
 {% if books|length == 0 %}
   <p>Dodaj pierwszą książkę.</p>
 {% else %}
