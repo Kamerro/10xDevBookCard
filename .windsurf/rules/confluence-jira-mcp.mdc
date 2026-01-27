@@ -1,0 +1,16 @@
+---
+trigger: always_on
+---
+## Purpose
+Confluence provides up-to-date official documentation and code examples.
+Use it selectively and efficiently.
+
+## When to Use Confluence
+Only invoke the Confluence MCP server when ALL of the following are true:
+- The task involves Jira or Confluence documentation
+- The information may be version-specific or recently changed
+- The answer cannot be reliably produced from general knowledge
+- Prompt specifically targets Jira or Confluence documentation
+
+## Location And Naming
+- confluence-vml in mcp_config.json 
