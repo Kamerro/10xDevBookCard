@@ -1,0 +1,23 @@
+{% extends "base_public.html" %}
+
+{% block content %}
+  <h1>Rejestracja</h1>
+
+  <form method="post" action="/auth/register">
+    <div>
+      <input type="email" name="email" placeholder="Email" autocomplete="email" required />
+    </div>
+    <div>
+      <input type="password" name="password" placeholder="Hasło" autocomplete="new-password" required />
+    </div>
+    <div>
+      <input type="password" name="password_confirm" placeholder="Powtórz hasło" autocomplete="new-password" required />
+    </div>
+
+    <button type="submit">Załóż konto</button>
+  </form>
+
+  <div class="actions" style="margin-top: 12px;">
+    <a href="/login">Masz już konto? Zaloguj się</a>
+  </div>
+{% endblock %}

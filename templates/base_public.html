@@ -11,18 +11,15 @@
       <div>
         <a href="/books">BookCards</a>
       </div>
-      <div>
-        <span>Wyloguj</span>
+      <div class="actions">
+        <a href="/login">Logowanie</a>
+        <a href="/register">Rejestracja</a>
       </div>
     </header>
 
     <main>
-      <div class="app-layout">
-        <aside>
-          {% include "partials/_book_list.html" %}
-        </aside>
-
-        <section>
+      <div class="public-main">
+        <section class="public-section">
           {% block content %}{% endblock %}
         </section>
       </div>

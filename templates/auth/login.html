@@ -1,0 +1,21 @@
+{% extends "base_public.html" %}
+
+{% block content %}
+  <h1>Logowanie</h1>
+
+  <form method="post" action="/auth/login">
+    <div>
+      <input type="email" name="email" placeholder="Email" autocomplete="email" required />
+    </div>
+    <div>
+      <input type="password" name="password" placeholder="Hasło" autocomplete="current-password" required />
+    </div>
+
+    <button type="submit">Zaloguj</button>
+  </form>
+
+  <div class="actions" style="margin-top: 12px;">
+    <a href="/forgot-password">Nie pamiętam hasła</a>
+    <a href="/register">Załóż konto</a>
+  </div>
+{% endblock %}
