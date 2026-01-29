@@ -18,8 +18,14 @@ def register(payload: RegisterRequest, db: Session = Depends(get_db)) -> UserOut
     except ValueError as e:
         if str(e) == "email_taken":
             raise HTTPException(status_code=400, detail="Email already registered") from e
-        if str(e) == "password_too_short":
-            raise HTTPException(status_code=400, detail="Password too short") from e
+        if str(e) == "password_invalid_length":
+            raise HTTPException(status_code=400, detail="Password must be 8-19 characters") from e
+        if str(e) == "password_missing_uppercase":
+            raise HTTPException(status_code=400, detail="Password must contain at least one uppercase letter") from e
+        if str(e) == "password_missing_digit":
+            raise HTTPException(status_code=400, detail="Password must contain at least one digit") from e
+        if str(e) == "password_missing_special":
+            raise HTTPException(status_code=400, detail="Password must contain at least one special character") from e
         raise
 
     return UserOut(id=user.id, email=user.email)

@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 from datetime import datetime, timedelta, timezone
+import re
 
 import bcrypt
 import jwt
@@ -19,13 +20,23 @@ def verify_password(password: str, password_hash: str) -> bool:
     return bcrypt.checkpw(password.encode("utf-8"), password_hash.encode("utf-8"))
 
 
+def validate_password(password: str) -> None:
+    if len(password) < 8 or len(password) > 19:
+        raise ValueError("password_invalid_length")
+    if re.search(r"[A-Z]", password) is None:
+        raise ValueError("password_missing_uppercase")
+    if re.search(r"[0-9]", password) is None:
+        raise ValueError("password_missing_digit")
+    if re.search(r"[^A-Za-z0-9]", password) is None:
+        raise ValueError("password_missing_special")
+
+
 def create_user(db: Session, email: str, password: str) -> User:
     existing = db.execute(select(User).where(User.email == email)).scalar_one_or_none()
     if existing is not None:
         raise ValueError("email_taken")
 
-    if len(password) < 8:
-        raise ValueError("password_too_short")
+    validate_password(password)
 
     user = User(email=email, password_hash=hash_password(password))
     db.add(user)
