@@ -50,6 +50,25 @@ bez konieczności ręcznej organizacji treści.
 - Reset hasła przez email
 - Każdy użytkownik ma dostęp wyłącznie do własnych danych
 
+#### Dostęp i widoczność (wpływ uwierzytelniania na UI)
+
+- Strony publiczne (dostępne bez logowania):
+  - Strona główna (landing)
+  - Logowanie
+  - Rejestracja
+  - Odzyskiwanie hasła / reset hasła
+- Strony wymagające zalogowania:
+  - Lista książek użytkownika
+  - Widok książki + notatki
+  - Dodawanie / edycja notatek
+  - (Docelowo) widoki związane z analizą AI
+- Header powinien zawsze komunikować stan użytkownika:
+  - niezalogowany: akcje „Logowanie”, „Rejestracja”
+  - zalogowany: informacja o użytkowniku (np. email) + akcja „Wyloguj”
+- Przekierowania:
+  - próba wejścia na stronę chronioną bez logowania -> przekierowanie do logowania
+  - po poprawnym logowaniu -> przekierowanie na stronę główną lub poprzednio żądaną stronę
+
 #### Książki
 - Dodawanie książki (minimum: tytuł, autor)
 - Wyświetlanie listy książek użytkownika
@@ -98,6 +117,46 @@ Jako nowy użytkownik
 Chcę założyć konto przy użyciu emaila  
 Aby mieć prywatny dostęp do swoich książek i notatek
 
+### US-01a Walidacja rejestracji
+Jako nowy użytkownik  
+Chcę otrzymać czytelny komunikat błędu, gdy email jest zajęty lub hasło jest zbyt słabe  
+Aby szybko poprawić dane i założyć konto
+
+### US-01b Potwierdzenie hasła
+Jako nowy użytkownik  
+Chcę potwierdzić hasło podczas rejestracji  
+Aby uniknąć literówek i późniejszych problemów z logowaniem
+
+### US-02 Logowanie
+Jako użytkownik  
+Chcę zalogować się do systemu przy użyciu emaila i hasła  
+Aby mieć dostęp do moich danych
+
+### US-02a Błąd logowania
+Jako użytkownik  
+Chcę otrzymać informację o błędnym emailu lub haśle  
+Aby móc poprawić dane logowania
+
+### US-03 Wylogowanie
+Jako zalogowany użytkownik  
+Chcę móc się wylogować  
+Aby zakończyć sesję na współdzielonym komputerze
+
+### US-04 Odzyskiwanie hasła (żądanie)
+Jako użytkownik, który nie pamięta hasła  
+Chcę poprosić o link do resetu hasła  
+Aby odzyskać dostęp do konta
+
+### US-04a Reset hasła (ustawienie nowego)
+Jako użytkownik  
+Chcę ustawić nowe hasło za pomocą linku z emaila  
+Aby ponownie zalogować się do konta
+
+### US-05 Kontrola dostępu do danych
+Jako użytkownik  
+Chcę mieć pewność, że widzę tylko swoje książki i notatki  
+Aby moje dane były prywatne
+
 ### US-02 Dodanie książki
 Jako zalogowany użytkownik  
 Chcę dodać książkę  
@@ -117,6 +176,16 @@ Aby bez wysiłku otrzymać streszczenie i ocenę ważności treści
 Jako użytkownik  
 Chcę widzieć uporządkowane notatki i ich ważność  
 Aby szybko zrozumieć kluczowe idee książki
+
+### US-06 Widoczność statusu użytkownika
+Jako użytkownik  
+Chcę widzieć w interfejsie, czy jestem zalogowany oraz móc szybko przejść do logowania/rejestracji  
+Aby łatwo poruszać się po aplikacji i rozumieć, dlaczego część funkcji jest niedostępna
+
+### US-07 Przekierowanie po logowaniu
+Jako użytkownik  
+Chcę po zalogowaniu wrócić do strony, którą próbowałem otworzyć  
+Aby nie tracić kontekstu i czasu
 
 ---
 
