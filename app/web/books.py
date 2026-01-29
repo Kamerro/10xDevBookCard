@@ -9,8 +9,17 @@ templates = Jinja2Templates(directory="templates")
 router = APIRouter()
 
 
+def _require_auth(request: Request) -> Response | None:
+    if not request.cookies.get("access_token"):
+        return RedirectResponse(url="/login", status_code=303)
+    return None
+
+
 @router.get("/books", response_class=HTMLResponse)
 async def books_index(request: Request) -> HTMLResponse:
+    auth_resp = _require_auth(request)
+    if auth_resp is not None:
+        return auth_resp
     context = {
         "request": request,
         "books": [],
@@ -24,6 +33,9 @@ async def books_index(request: Request) -> HTMLResponse:
 
 @router.get("/books/{book_id}", response_class=HTMLResponse)
 async def books_detail(request: Request, book_id: str) -> HTMLResponse:
+    auth_resp = _require_auth(request)
+    if auth_resp is not None:
+        return auth_resp
     context = {
         "request": request,
         "books": [],
@@ -43,6 +55,9 @@ async def create_book(
     title: str = Form(""),
     author: str = Form(""),
 ) -> Response:
+    auth_resp = _require_auth(request)
+    if auth_resp is not None:
+        return auth_resp
     if not title.strip() or not author.strip():
         context = {
             "request": request,
@@ -64,6 +79,9 @@ async def create_note(
     book_id: str,
     content: str = Form(""),
 ) -> Response:
+    auth_resp = _require_auth(request)
+    if auth_resp is not None:
+        return auth_resp
     if not content.strip():
         context = {
             "request": request,
@@ -87,6 +105,9 @@ async def update_note(
     book_id: str = Form(""),
     content: str = Form(""),
 ) -> Response:
+    auth_resp = _require_auth(request)
+    if auth_resp is not None:
+        return auth_resp
     if not book_id:
         return RedirectResponse(url="/books", status_code=303)
 

@@ -3,7 +3,11 @@
 {% block content %}
   <h1>Rejestracja</h1>
 
-  <form method="post" action="/auth/register">
+  {% if error_register %}
+    <p class="error">{{ error_register }}</p>
+  {% endif %}
+
+  <form method="post" action="/register">
     <div>
       <input type="email" name="email" placeholder="Email" autocomplete="email" required />
     </div>
