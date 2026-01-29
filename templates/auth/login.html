@@ -3,7 +3,11 @@
 {% block content %}
   <h1>Logowanie</h1>
 
-  <form method="post" action="/auth/login">
+  {% if error_login %}
+    <p class="error">{{ error_login }}</p>
+  {% endif %}
+
+  <form method="post" action="/login">
     <div>
       <input type="email" name="email" placeholder="Email" autocomplete="email" required />
     </div>
