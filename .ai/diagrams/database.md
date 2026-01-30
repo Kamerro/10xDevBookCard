@@ -1,5 +1,9 @@
 # Database Diagram
-
+ 
+ > **Najważniejsze dokumenty (source of truth)**
+ > - [GOVERNANCE](../GOVERNANCE.md)
+ > - [PRD](../prd.md)
+ 
 ```mermaid
 UserDiagram
   USER {

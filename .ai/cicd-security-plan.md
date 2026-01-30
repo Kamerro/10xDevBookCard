@@ -1,5 +1,9 @@
 # CI/CD + Security Plan (GitHub Actions)
 
+> **Najważniejsze dokumenty (source of truth)**
+> - [GOVERNANCE](./GOVERNANCE.md)
+> - [PRD](./prd.md)
+
 ## Cel
 
 - Kod na GitHub ma być automatycznie sprawdzany pod kątem:

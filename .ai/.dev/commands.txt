@@ -59,3 +59,5 @@ python -m pytest -v
 
 # Z coverage (wymaga pytest-cov):
 python -m pytest --cov=app --cov-report=term-missing
+
+$env:OPENROUTER_API_KEY="..."

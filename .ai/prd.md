@@ -1,5 +1,9 @@
 # PRD – BookCards (MVP)
 
+> **Najważniejsze dokumenty (source of truth)**
+> - [GOVERNANCE](./GOVERNANCE.md)
+> - [PRD](./prd.md)
+
 ## 1. Overview produktu
 
 BookCards to prywatna aplikacja webowa umożliwiająca użytkownikom budowanie osobistej biblioteki książek oraz dodawanie notatek w trakcie czytania.  

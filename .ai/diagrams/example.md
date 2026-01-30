@@ -1,5 +1,9 @@
 # Example Diagram
-
+ 
+ > **Najważniejsze dokumenty (source of truth)**
+ > - [GOVERNANCE](../GOVERNANCE.md)
+ > - [PRD](../prd.md)
+ 
 ```mermaid
 graph TD
     A[Start] --> B{Decision}

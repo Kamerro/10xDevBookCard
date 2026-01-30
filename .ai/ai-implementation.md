@@ -1,5 +1,9 @@
 # AI Implementation (OpenRouter) — spec techniczna
-
+ 
+ > **Najważniejsze dokumenty (source of truth)**
+ > - [GOVERNANCE](./GOVERNANCE.md)
+ > - [PRD](./prd.md)
+ 
 ## Gdzie już jest opisane (źródła)
 
 - `.ai/.windsurf/rules/openrouter-service-implementation-plan.md`

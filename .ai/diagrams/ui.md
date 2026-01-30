@@ -1,5 +1,9 @@
 # UI Diagram
-
+ 
+ > **Najważniejsze dokumenty (source of truth)**
+ > - [GOVERNANCE](../GOVERNANCE.md)
+ > - [PRD](../prd.md)
+ 
 ```mermaid
 flowchart TD
   U[User] -->|Opens app| UI[UI Shell]
