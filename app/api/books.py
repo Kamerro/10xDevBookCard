@@ -1,6 +1,6 @@
 from uuid import UUID
 
-from fastapi import APIRouter, Depends, HTTPException, status
+from fastapi import APIRouter, BackgroundTasks, Depends, HTTPException, status
 from sqlalchemy.orm import Session
 
 from app.api.deps import get_current_user, get_db
@@ -23,7 +23,8 @@ from app.services.book_service import (
     get_book_by_id,
     get_user_books,
 )
-from app.services.note_service import create_note, get_book_for_user
+from app.services.note_service import create_note, get_book_for_user, count_notes_for_book
+from app.services.ai_service import trigger_analysis_if_needed
 
 router = APIRouter(prefix="/books", tags=["books"])
 
@@ -125,6 +126,7 @@ async def delete_book_endpoint(
 async def create_note_endpoint(
     book_id: UUID,
     payload: NoteCreateRequest,
+    background_tasks: BackgroundTasks,
     db: Session = Depends(get_db),
     current_user: User = Depends(get_current_user),
 ) -> NoteOutSchema:
@@ -133,6 +135,16 @@ async def create_note_endpoint(
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Book not found")
 
     note = create_note(db, book_id=book_id, content=payload.content)
+
+    note_count = count_notes_for_book(db, book_id=book_id)
+    trigger_analysis_if_needed(
+        db,
+        book_id=book_id,
+        user_id=current_user.id,
+        note_count=note_count,
+        background_tasks=background_tasks,
+    )
+
     return NoteOutSchema(
         id=note.id,
         book_id=note.book_id,

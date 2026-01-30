@@ -3,7 +3,7 @@ from __future__ import annotations
 from uuid import UUID
 
 import jwt
-from fastapi import APIRouter, Depends, Form, Request
+from fastapi import APIRouter, BackgroundTasks, Depends, Form, Request
 from fastapi.responses import HTMLResponse, RedirectResponse, Response
 from fastapi.templating import Jinja2Templates
 from sqlalchemy.orm import Session
@@ -18,10 +18,12 @@ from app.services.book_service import (
     get_user_books,
 )
 from app.services.note_service import (
+    count_notes_for_book,
     create_note as create_note_service,
     get_note_by_id,
     update_note as update_note_service,
 )
+from app.services.ai_service import trigger_analysis_if_needed
 
 templates = Jinja2Templates(directory="templates")
 
@@ -142,6 +144,7 @@ async def create_book(
 async def create_note(
     request: Request,
     book_id: str,
+    background_tasks: BackgroundTasks,
     content: str = Form(""),
     db: Session = Depends(get_db),
 ) -> Response:
@@ -178,6 +181,15 @@ async def create_note(
         return templates.TemplateResponse("books/detail.html", context)
 
     create_note_service(db, book_id=book_uuid, content=content.strip())
+
+    note_count = count_notes_for_book(db, book_id=book_uuid)
+    trigger_analysis_if_needed(
+        db,
+        book_id=book_uuid,
+        user_id=user.id,
+        note_count=note_count,
+        background_tasks=background_tasks,
+    )
     return RedirectResponse(url=f"/books/{book_id}", status_code=303)
 
 
@@ -185,6 +197,7 @@ async def create_note(
 async def update_note(
     request: Request,
     note_id: str,
+    background_tasks: BackgroundTasks,
     book_id: str = Form(""),
     content: str = Form(""),
     db: Session = Depends(get_db),
@@ -228,4 +241,13 @@ async def update_note(
         return templates.TemplateResponse("books/detail.html", context)
 
     update_note_service(db, note=note, content=content.strip())
+
+    note_count = count_notes_for_book(db, book_id=book_uuid)
+    trigger_analysis_if_needed(
+        db,
+        book_id=book_uuid,
+        user_id=user.id,
+        note_count=note_count,
+        background_tasks=background_tasks,
+    )
     return RedirectResponse(url=f"/books/{book_id}", status_code=303)

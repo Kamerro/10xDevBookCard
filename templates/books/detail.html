@@ -6,6 +6,27 @@
     <p>{{ selected_book.author }}</p>
   </div>
 
+  {% if selected_book.ai_analysis %}
+    {% if selected_book.ai_analysis.analysis_status == "ready" and selected_book.ai_analysis.summary %}
+      <div class="card">
+        <div class="card-header">
+          <strong>Summary</strong>
+        </div>
+        <div>
+          <p>{{ selected_book.ai_analysis.summary }}</p>
+        </div>
+      </div>
+    {% elif selected_book.ai_analysis.analysis_status == "processing" %}
+      <div class="card">
+        <p>AI: analiza w toku...</p>
+      </div>
+    {% elif selected_book.ai_analysis.analysis_status == "failed" %}
+      <div class="card">
+        <p>AI: błąd analizy.</p>
+      </div>
+    {% endif %}
+  {% endif %}
+
   <div>
     <form method="post" action="/books/{{ selected_book.id }}/notes">
       <div>
