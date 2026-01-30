@@ -95,13 +95,21 @@ async def books_detail(request: Request, book_id: str, db: Session = Depends(get
     
     books = get_user_books(db, user_id=user.id)
     notes = sorted(book.notes, key=lambda n: n.number)
+
+    edit_note_raw = request.query_params.get("edit_note_id")
+    edit_note_id = None
+    if edit_note_raw:
+        try:
+            edit_note_id = UUID(edit_note_raw)
+        except ValueError:
+            edit_note_id = None
     
     context = {
         "request": request,
         "books": books,
         "selected_book": book,
         "notes": notes,
-        "edit_note_id": request.query_params.get("edit_note_id"),
+        "edit_note_id": edit_note_id,
         "error_add_book": None,
         "error_add_note": None,
         "error_edit_note": None,

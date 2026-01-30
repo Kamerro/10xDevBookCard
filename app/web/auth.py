@@ -33,7 +33,7 @@ async def login_submit(
 
     token = create_access_token(user_id=str(user.id))
 
-    response = RedirectResponse(url="/", status_code=303)
+    response = RedirectResponse(url="/books", status_code=303)
     response.set_cookie(
         key="access_token",
         value=token,
@@ -84,7 +84,7 @@ async def register_submit(
         return templates.TemplateResponse("auth/register.html", context)
 
     token = create_access_token(user_id=str(user.id))
-    response = RedirectResponse(url="/", status_code=303)
+    response = RedirectResponse(url="/books", status_code=303)
     response.set_cookie(
         key="access_token",
         value=token,
