@@ -18,7 +18,7 @@ def test_ssr_books_requires_cookie_redirects_to_login(client):
 def test_ssr_login_sets_cookie_and_redirects(client, user_a):
     resp = _login(client, email=user_a.email, password="Password1!")
     assert resp.status_code == 303
-    assert resp.headers["location"] == "/"
+    assert resp.headers["location"] == "/books"
     set_cookie = resp.headers.get("set-cookie", "")
     assert "access_token=" in set_cookie
 
