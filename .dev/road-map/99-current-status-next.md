@@ -3,8 +3,9 @@
 ## Na czym stoi projekt
 
 - Aplikacja FastAPI działa i ma SSR UI (Jinja2) dla widoku książek/notatek.
-- UI jest na placeholderach (brak realnych danych z DB w SSR).
+- SSR UI jest podpięte do DB (books + notes są pobierane i zapisywane).
 - Serwis OpenRouter działa i ma testy jednostkowe.
+- JSON API jest dostępne pod prefixem `/api`.
 
 ## Co jest MVP-done
 
@@ -13,28 +14,19 @@
 - SSR UI layout + formularze + CSS
 - konfiguracja `.env` + bezpieczeństwo `.gitignore`
 - OpenRouter service + testy
+- CRUD dla książek i notatek
+- Auth (rejestracja/logowanie) i ochrona endpointów
 
 ## Co jest jeszcze brakujące (kolejność sugerowana)
 
-1. **Modele SQLAlchemy + Alembic**
-   - odwzorować `db-plan.md` w `app/models`
-   - przygotować migracje
-
-2. **CRUD w services + API**
-   - books: create/list/get
-   - notes: create/update
-
-3. **Wpięcie SSR do DB**
-   - `GET /books` i `GET /books/{id}` z realnymi danymi
-   - `POST /books`, `POST /books/{id}/notes`, `POST /notes/{note_id}` zapisują do DB
-
-4. **AI pipeline (BackgroundTasks)**
+1. **AI pipeline (BackgroundTasks)**
    - `ai_service` + trigger po 3 notatkach
    - persystencja wyników AI + status badge
 
-5. **Auth**
-   - rejestracja/logowanie
-   - ochrona endpointów
+2. **Dokończenie UX + edge-case'y**
+   - komunikaty 404/brak dostępu w SSR (obecnie proste redirecty)
+   - dopięcie badge `processing` w SSR na liście książek (gdy będzie AI)
+   - (opcjonalnie) doprecyzowanie rozdziału odpowiedzialności: SSR (cookie) vs API (Bearer)
 
 ## Otwarte uwagi
 

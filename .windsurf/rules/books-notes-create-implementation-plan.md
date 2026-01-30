@@ -1,4 +1,4 @@
-# Plan implementacji — POST /books/{book_id}/notes (MVP)
+# Plan implementacji — POST /api/books/{book_id}/notes (MVP)
 
 ## Cel
 
@@ -14,7 +14,7 @@ Dodać pojedynczą notatkę do książki. Jeżeli po dodaniu książka ma >= 3 n
 
 - `content: str`
 
-### Response (200)
+### Response (201)
 
 - `id: UUID`
 - `book_id: UUID`
@@ -61,14 +61,10 @@ Dodać pojedynczą notatkę do książki. Jeżeli po dodaniu książka ma >= 3 n
 
 ### 4) Serwis notes
 
-- `app/services/notes_service.py`:
-  - `create_note(db: Session, *, user_id: UUID, book_id: UUID, content: str) -> Note`
-    - sprawdź, czy book istnieje i należy do usera
-    - wylicz `next_number`:
-      - `select(max(Note.number)) where Note.book_id == book_id`
-      - `next_number = (max or 0) + 1`
-    - utwórz note
-    - `db.add/commit/refresh`
+- Implementacja jest w `app/services/note_service.py`:
+  - `get_next_note_number(db, *, book_id)`
+  - `create_note(db, *, book_id, content)`
+  - sprawdzenie własności book->user wykonywane jest w warstwie API (przed wywołaniem serwisu)
 
 ### 5) Trigger AI (BackgroundTasks)
 
@@ -81,9 +77,13 @@ Dodać pojedynczą notatkę do książki. Jeżeli po dodaniu książka ma >= 3 n
 
 Uwaga: AI ma być wyłącznie w background task (rules). Sama implementacja AI poza zakresem tego planu, ale plan zakłada istnienie funkcji w `app/services/ai_service.py` oraz aktualizację rekordu analizy do `done`/`failed`.
 
+Status aktualny:
+
+- Backend dla tworzenia notatek działa, ale **nie uruchamia jeszcze AI** (zgodnie z bieżącym zakresem: „bez obsługi AI”).
+
 ### 6) Endpoint
 
-- `POST /books/{book_id}/notes` w `app/api/notes.py` (lub `books.py` — ale zgodnie z API plan: notes route pod books).
+- `POST /api/books/{book_id}/notes` w `app/api/books.py` (router jest mountowany pod `/api` w `app/main.py`).
 - Parametry:
   - `book_id` path
   - `payload: CreateNoteRequest`
