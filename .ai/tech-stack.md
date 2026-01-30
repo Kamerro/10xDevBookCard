@@ -1,5 +1,9 @@
 # Tech Stack – BookCards (MVP)
 
+> **Najważniejsze dokumenty (source of truth)**
+> - [GOVERNANCE](./GOVERNANCE.md)
+> - [PRD](./prd.md)
+
 ## 1. Język i runtime
 - Language: Python 3.13.4
 - Typowanie: standard typing + Pydantic

@@ -1,5 +1,9 @@
 # UI Fixes Plan (SSR)
 
+ > **Najważniejsze dokumenty (source of truth)**
+ > - [GOVERNANCE](./GOVERNANCE.md)
+ > - [PRD](./prd.md)
+
 ## Cel
 
 - Root `/` ma wyświetlać **Login/Register na środku** (bez linków typu „przejdź do książek”).

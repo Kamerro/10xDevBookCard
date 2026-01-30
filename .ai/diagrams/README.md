@@ -1,6 +1,10 @@
 # Diagrams
-
-This folder contains Mermaid diagrams for the 10xDevBookCard project.
+ 
+ > **Najważniejsze dokumenty (source of truth)**
+ > - [GOVERNANCE](../GOVERNANCE.md)
+ > - [PRD](../prd.md)
+ 
+ This folder contains Mermaid diagrams for the 10xDevBookCard project.
 
 ## Usage
 

@@ -1,5 +1,9 @@
 # Auth UI (MVP) -> implementacja produkcyjna (checklista)
 
+> **Najważniejsze dokumenty (source of truth)**
+> - [GOVERNANCE](./GOVERNANCE.md)
+> - [PRD](./prd.md)
+
 ## Co trzeba zmienić w produkcji
 
 ## 1) Oddzielenie UI routes od API
