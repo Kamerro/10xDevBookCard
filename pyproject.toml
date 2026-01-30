@@ -1,0 +1,43 @@
+[project]
+name = "bookcards"
+version = "0.1.0"
+description = "Book notes management with AI analysis"
+requires-python = ">=3.12"
+
+[tool.ruff]
+target-version = "py312"
+line-length = 120
+exclude = [
+    ".git",
+    ".venv",
+    "__pycache__",
+    "alembic/versions",
+]
+
+[tool.ruff.lint]
+select = [
+    "E",      # pycodestyle errors
+    "F",      # pyflakes
+    "I",      # isort
+    "B",      # flake8-bugbear
+    "UP",     # pyupgrade
+    "S",      # flake8-bandit (security)
+]
+ignore = [
+    "S101",   # assert used (ok in tests)
+    "S105",   # hardcoded password (false positives)
+    "S106",   # hardcoded password (false positives)
+    "B008",   # Depends() in defaults - standard FastAPI pattern
+]
+
+[tool.ruff.lint.per-file-ignores]
+"tests/*" = ["S101"]
+"alembic/*" = ["E402"]  # imports after config in alembic env
+
+[tool.ruff.format]
+quote-style = "double"
+indent-style = "space"
+
+[tool.pytest.ini_options]
+asyncio_mode = "auto"
+testpaths = ["tests"]

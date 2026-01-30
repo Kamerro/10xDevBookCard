@@ -16,6 +16,7 @@ from app.api.schemas.books import (
 from app.api.schemas.notes import NoteCreateRequest
 from app.api.schemas.notes import NoteOut as NoteOutSchema
 from app.models.user import User
+from app.services.ai_service import trigger_analysis_if_needed
 from app.services.book_service import (
     create_book,
     delete_book,
@@ -23,8 +24,7 @@ from app.services.book_service import (
     get_book_by_id,
     get_user_books,
 )
-from app.services.note_service import create_note, get_book_for_user, count_notes_for_book
-from app.services.ai_service import trigger_analysis_if_needed
+from app.services.note_service import count_notes_for_book, create_note, get_book_for_user
 
 router = APIRouter(prefix="/books", tags=["books"])
 
