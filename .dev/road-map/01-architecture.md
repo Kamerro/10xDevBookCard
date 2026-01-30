@@ -10,7 +10,7 @@ To jest „mapa połączeń” w projekcie. Bez ozdobników.
 
 - **Web/SSR layer (`app/web`, `templates`)**
   - odpowiedzialność: renderowanie HTML (Jinja2), obsługa formularzy
-  - w MVP dopuszczone placeholdery bez DB
+  - SSR korzysta bezpośrednio z `app/services` i zapisuje/odczytuje dane z DB
 
 - **Services (`app/services`)**
   - odpowiedzialność: logika biznesowa
@@ -28,7 +28,7 @@ To jest „mapa połączeń” w projekcie. Bez ozdobników.
 
 1. `FastAPI` w `app/main.py`
 2. `app/web/router.py` → `app/web/books.py`
-3. endpoint składa `context` (na razie placeholdery `books=[]`, `notes=[]`)
+3. endpoint składa `context` z danych z DB (przez `app/services/*_service.py`)
 4. `Jinja2Templates` renderuje `templates/books/*.html`
 5. `base.html` includuje `partials/_book_list.html`
 6. CSS ładuje się z `/static/styles.css`
@@ -46,21 +46,32 @@ To jest „mapa połączeń” w projekcie. Bez ozdobników.
 - `POST /notes/{note_id}` → `update_note()`
   - walidacja: `content` niepusty
 
-Uwaga: te POSTy są obecnie „UI-only”; nie zapisują do DB.
+Uwaga: te POSTy zapisują do DB przez serwisy.
+
+## Routing: rozdzielenie SSR vs JSON API
+
+- SSR działa na ścieżkach typu `/books`, `/login`.
+- JSON API jest mountowane pod prefixem **`/api`** (np. `/api/books`).
+
+## Auth: SSR vs JSON API
+
+- SSR:
+  - po loginie/rejestracji ustawia cookie `access_token`
+  - widoki SSR dekodują JWT z cookie i pobierają usera z DB
+- JSON API:
+  - oczekuje `Authorization: Bearer <access_token>`
+  - dependency `get_current_user` w `app/api/deps.py`
 
 ## Przepływ AI (dziś)
 
 - `app/services/openrouter_service.py`
   - jest gotowy do użycia w services
-  - nie jest jeszcze wpięty w żaden endpoint ani BackgroundTask
-
-Docelowo:
-
-- endpoint tworzący notatkę (API/SSR) zapisze notatkę do DB
-- jeśli liczba notatek >= 3:
-  - uruchomi `BackgroundTasks` → `ai_service.analyze_book(...)`
-  - `ai_service` wywoła `openrouter_service.structured_output(...)`
-  - wyniki zostaną zapisane w DB
+- Docelowo:
+  - endpoint tworzący notatkę (API/SSR) zapisze notatkę do DB
+  - jeśli liczba notatek >= 3:
+    - uruchomi `BackgroundTasks` → `ai_service.analyze_book(...)`
+    - `ai_service` wywoła `openrouter_service.structured_output(...)`
+    - wyniki zostaną zapisane w DB
 
 ## Miejsca „source of truth”
 

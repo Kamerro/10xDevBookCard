@@ -20,6 +20,14 @@ Zakres: MVP, REST (JSON), FastAPI + Pydantic v2, SQLAlchemy 2.0, PostgreSQL. Bra
 - Sesja DB przez dependency injection (`get_db`).
 - Błędy: jawne `HTTPException`, fail fast.
 
+### Base path (ważne)
+
+- JSON API jest mountowane pod prefixem: **`/api`** (patrz `app/main.py`).
+- To rozdziela routing JSON API od SSR (Jinja2), który używa ścieżek typu `/books`.
+- W praktyce:
+  - `POST /auth/login` w tym dokumencie oznacza **`POST /api/auth/login`**
+  - `GET /books` w tym dokumencie oznacza **`GET /api/books`**
+
 ---
 
 ## Auth (JWT access token)
@@ -33,6 +41,11 @@ Zakres: MVP, REST (JSON), FastAPI + Pydantic v2, SQLAlchemy 2.0, PostgreSQL. Bra
 
 - Token przekazywany w nagłówku:
   - `Authorization: Bearer <access_token>`
+
+Uwaga:
+
+- SSR UI ustawia token jako cookie `access_token` (dla wygody formularzy i redirectów).
+- JSON API nadal używa nagłówka `Authorization: Bearer ...`.
 
 ---
 

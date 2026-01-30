@@ -1,4 +1,4 @@
-# Plan implementacji — GET /books/{book_id} (MVP)
+# Plan implementacji — GET /api/books/{book_id} (MVP)
 
 ## Cel
 
@@ -51,11 +51,9 @@ Uwaga: `duplicates` i `importance_ranking` w DB są JSONB; w API wystawiamy je j
 
 ### 3) Serwis books
 
-- `app/services/books_service.py`:
-  - `get_book_detail(db: Session, *, user_id: UUID, book_id: UUID) -> dict`
-    - sprawdź czy book należy do usera
-    - pobierz notes posortowane po `number`
-    - pobierz analysis 1:1 (opcjonalnie)
+- Implementacja jest w `app/services/book_service.py`:
+  - `get_book_by_id(db, *, book_id, user_id)` + eager load relacji `notes` i `ai_analysis`
+  - sortowanie notatek po `number` w warstwie API (albo w serwisie)
 
 Uwagi
 
@@ -63,7 +61,7 @@ Uwagi
 
 ### 4) Endpoint
 
-- `GET /books/{book_id}` w `app/api/books.py`:
+- `GET /api/books/{book_id}` w `app/api/books.py` (router jest mountowany pod `/api` w `app/main.py`):
   - `db = Depends(get_db)`
   - `current_user = Depends(get_current_user)`
   - zwróć `BookDetailOut`
