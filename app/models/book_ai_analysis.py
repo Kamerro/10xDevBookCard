@@ -3,7 +3,7 @@ from __future__ import annotations
 from datetime import datetime
 import uuid
 
-from sqlalchemy import DateTime, ForeignKey, String, text
+from sqlalchemy import DateTime, ForeignKey, JSON, String
 from sqlalchemy.dialects.postgresql import JSONB, UUID
 from sqlalchemy.orm import Mapped, mapped_column, relationship
 from sqlalchemy.sql import func
@@ -24,8 +24,16 @@ class BookAIAnalysis(Base):
     )
     analysis_status: Mapped[str] = mapped_column(String, nullable=False)
     summary: Mapped[str | None] = mapped_column(String, nullable=True)
-    duplicates: Mapped[dict] = mapped_column(JSONB, nullable=False, server_default=text("'[]'::jsonb"))
-    importance_ranking: Mapped[dict] = mapped_column(JSONB, nullable=False, server_default=text("'[]'::jsonb"))
+    duplicates: Mapped[list] = mapped_column(
+        JSON().with_variant(JSONB, "postgresql"),
+        nullable=False,
+        default=list,
+    )
+    importance_ranking: Mapped[list] = mapped_column(
+        JSON().with_variant(JSONB, "postgresql"),
+        nullable=False,
+        default=list,
+    )
     analyzed_at: Mapped[datetime | None] = mapped_column(DateTime(timezone=True), nullable=True)
     analysis_error: Mapped[str | None] = mapped_column(String, nullable=True)
     created_at: Mapped[datetime] = mapped_column(
