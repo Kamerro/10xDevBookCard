@@ -1,11 +1,5 @@
 # Auth UI (MVP) -> implementacja produkcyjna (checklista)
 
-## Co jest teraz (MVP)
-
-- Strony SSR (Jinja): `/`, `/login`, `/register`, `/forgot-password`.
-- `POST /login` w warstwie `app/web` robi **tylko** redirect `303` na `/` (bez walidacji i bez sesji).
-- Formularze `register` i `forgot-password` wysyłają `POST` na `/auth/register` i `/auth/forgot-password` (endpointy jeszcze niezaimplementowane).
-
 ## Co trzeba zmienić w produkcji
 
 ## 1) Oddzielenie UI routes od API
@@ -14,14 +8,12 @@
   - przyjąć dane z formularza (`email`, `password`) jako `Form(...)`.
   - wywołać logikę autoryzacji (bezpośrednio w serwisie lub przez API layer), zamiast ślepego redirectu.
 - Alternatywnie:
-  - UI `POST /login` może wywoływać `POST /auth/login` (wewnętrznie), a potem ustawiać cookie.
+  - UI `POST /login` może wywoływać `POST /api/auth/login` (wewnętrznie), a potem ustawiać cookie.
 
 ## 2) Prawdziwa autoryzacja i sesja
 
-- Zaimplementować `POST /auth/login` (JWT) zgodnie z `.windsurf/rules/auth-login-implementation-plan.md`.
-- Zdecydować jak UI przechowuje sesję:
-  - **A)** cookie `HttpOnly` (preferowane dla SSR)
-  - **B)** token w localStorage (niezalecane dla SSR i bezpieczeństwa)
+- JSON API endpoint `POST /api/auth/login` (JWT) oraz `POST /api/auth/register`.
+- UI (SSR) przechowuje sesję jako cookie `HttpOnly` (`access_token`).
 - Dodać `logout`:
   - UI link w headerze powinien być akcją (np. `POST /logout`) czyszczącą cookie.
 
