@@ -7,7 +7,6 @@ from sqlalchemy.orm import Session, joinedload
 
 from app.models.book import Book
 from app.models.book_ai_analysis import BookAIAnalysis
-from app.models.note import Note
 
 
 def create_book(db: Session, *, user_id: UUID, title: str, author: str) -> Book:
@@ -42,9 +41,7 @@ def get_book_by_id(db: Session, *, book_id: UUID, user_id: UUID) -> Book | None:
 
 
 def delete_book(db: Session, *, book_id: UUID, user_id: UUID) -> bool:
-    book = db.execute(
-        select(Book).where(Book.id == book_id, Book.user_id == user_id)
-    ).scalar_one_or_none()
+    book = db.execute(select(Book).where(Book.id == book_id, Book.user_id == user_id)).scalar_one_or_none()
     if book is None:
         return False
     db.delete(book)

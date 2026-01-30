@@ -1,6 +1,6 @@
 from __future__ import annotations
 
-from datetime import datetime, timezone
+from datetime import UTC, datetime
 from typing import Any
 from uuid import UUID
 
@@ -16,7 +16,6 @@ from app.services.openrouter_service import (
     OpenRouterError,
     structured_output,
 )
-
 
 SCHEMA_NAME = "book_ai_analysis_v1"
 
@@ -186,7 +185,7 @@ async def analyze_book(db: Session, *, book_id: UUID, user_id: UUID) -> None:
             ai.analysis_error = str(exc)
             db.commit()
             return
-        except Exception as exc:
+        except Exception:
             ai.analysis_status = "failed"
             ai.analysis_error = "unexpected_error"
             db.commit()
@@ -205,7 +204,7 @@ async def analyze_book(db: Session, *, book_id: UUID, user_id: UUID) -> None:
         ai.summary = str(result["summary"]).strip()
         ai.duplicates = result["duplicates"]
         ai.importance_ranking = result["importance_ranking"]
-        ai.analyzed_at = datetime.now(timezone.utc)
+        ai.analyzed_at = datetime.now(UTC)
         ai.analysis_error = None
         ai.analysis_status = "ready"
         ai.analysis_version = target_version

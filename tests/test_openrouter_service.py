@@ -104,9 +104,7 @@ class OpenRouterServiceTests(unittest.IsolatedAsyncioTestCase):
                 )
 
     async def test_chat_completion_invalid_json(self) -> None:
-        dummy = _DummyAsyncClient(
-            response=_DummyResponse(status_code=200, json_exc=ValueError("not json"))
-        )
+        dummy = _DummyAsyncClient(response=_DummyResponse(status_code=200, json_exc=ValueError("not json")))
         with patch.object(httpx, "AsyncClient", return_value=dummy):
             with self.assertRaises(openrouter_service.OpenRouterInvalidResponseError):
                 await openrouter_service.chat_completion(
@@ -129,7 +127,7 @@ class OpenRouterServiceTests(unittest.IsolatedAsyncioTestCase):
                     "choices": [
                         {
                             "message": {
-                                "content": "{\"ok\": true}",
+                                "content": '{"ok": true}',
                             }
                         }
                     ]

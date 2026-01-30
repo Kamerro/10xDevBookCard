@@ -2,12 +2,11 @@ from __future__ import annotations
 
 from logging.config import fileConfig
 
-from alembic import context
 from sqlalchemy import engine_from_config, pool
 
+from alembic import context
 from app.core.settings import settings
 from app.models.base import Base
-
 
 config = context.config
 
@@ -17,7 +16,7 @@ if config.config_file_name is not None:
 config.set_main_option("sqlalchemy.url", settings.database_url)
 
 # Ensure models are imported so Base.metadata is populated
-from app.models import book_ai_analysis, book, note, user  # noqa: F401
+from app.models import book, book_ai_analysis, note, user  # noqa: F401
 
 target_metadata = Base.metadata
 

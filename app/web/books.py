@@ -11,19 +11,24 @@ from sqlalchemy.orm import Session
 from app.api.deps import get_db
 from app.core.settings import settings
 from app.models.user import User
+from app.services.ai_service import trigger_analysis_if_needed
 from app.services.book_service import (
     create_book as create_book_service,
-    delete_book as delete_book_service,
+)
+from app.services.book_service import (
     get_book_by_id,
     get_user_books,
 )
 from app.services.note_service import (
     count_notes_for_book,
-    create_note as create_note_service,
     get_note_by_id,
+)
+from app.services.note_service import (
+    create_note as create_note_service,
+)
+from app.services.note_service import (
     update_note as update_note_service,
 )
-from app.services.ai_service import trigger_analysis_if_needed
 
 templates = Jinja2Templates(directory="templates")
 
@@ -40,6 +45,7 @@ def get_current_user_from_cookie(request: Request, db: Session) -> User | None:
         if user_id_str is None:
             return None
         from sqlalchemy import select
+
         user = db.execute(select(User).where(User.id == UUID(user_id_str))).scalar_one_or_none()
         return user
     except (jwt.ExpiredSignatureError, jwt.InvalidTokenError, ValueError):
@@ -57,11 +63,11 @@ async def books_index(request: Request, db: Session = Depends(get_db)) -> HTMLRe
     auth_resp = _require_auth(request)
     if auth_resp is not None:
         return auth_resp
-    
+
     user = get_current_user_from_cookie(request, db)
     if user is None:
         return RedirectResponse(url="/login", status_code=303)
-    
+
     books = get_user_books(db, user_id=user.id)
     context = {
         "request": request,
@@ -79,20 +85,20 @@ async def books_detail(request: Request, book_id: str, db: Session = Depends(get
     auth_resp = _require_auth(request)
     if auth_resp is not None:
         return auth_resp
-    
+
     user = get_current_user_from_cookie(request, db)
     if user is None:
         return RedirectResponse(url="/login", status_code=303)
-    
+
     try:
         book_uuid = UUID(book_id)
     except ValueError:
         return RedirectResponse(url="/books", status_code=303)
-    
+
     book = get_book_by_id(db, book_id=book_uuid, user_id=user.id)
     if book is None:
         return RedirectResponse(url="/books", status_code=303)
-    
+
     books = get_user_books(db, user_id=user.id)
     notes = sorted(book.notes, key=lambda n: n.number)
 
@@ -103,7 +109,7 @@ async def books_detail(request: Request, book_id: str, db: Session = Depends(get
             edit_note_id = UUID(edit_note_raw)
         except ValueError:
             edit_note_id = None
-    
+
     context = {
         "request": request,
         "books": books,
@@ -127,11 +133,11 @@ async def create_book(
     auth_resp = _require_auth(request)
     if auth_resp is not None:
         return auth_resp
-    
+
     user = get_current_user_from_cookie(request, db)
     if user is None:
         return RedirectResponse(url="/login", status_code=303)
-    
+
     if not title.strip() or not author.strip():
         books = get_user_books(db, user_id=user.id)
         context = {
@@ -159,20 +165,20 @@ async def create_note(
     auth_resp = _require_auth(request)
     if auth_resp is not None:
         return auth_resp
-    
+
     user = get_current_user_from_cookie(request, db)
     if user is None:
         return RedirectResponse(url="/login", status_code=303)
-    
+
     try:
         book_uuid = UUID(book_id)
     except ValueError:
         return RedirectResponse(url="/books", status_code=303)
-    
+
     book = get_book_by_id(db, book_id=book_uuid, user_id=user.id)
     if book is None:
         return RedirectResponse(url="/books", status_code=303)
-    
+
     if not content.strip():
         books = get_user_books(db, user_id=user.id)
         notes = sorted(book.notes, key=lambda n: n.number)
@@ -213,11 +219,11 @@ async def update_note(
     auth_resp = _require_auth(request)
     if auth_resp is not None:
         return auth_resp
-    
+
     user = get_current_user_from_cookie(request, db)
     if user is None:
         return RedirectResponse(url="/login", status_code=303)
-    
+
     if not book_id:
         return RedirectResponse(url="/books", status_code=303)
 
@@ -226,11 +232,11 @@ async def update_note(
         book_uuid = UUID(book_id)
     except ValueError:
         return RedirectResponse(url="/books", status_code=303)
-    
+
     note = get_note_by_id(db, note_id=note_uuid, user_id=user.id)
     if note is None:
         return RedirectResponse(url=f"/books/{book_id}", status_code=303)
-    
+
     book = get_book_by_id(db, book_id=book_uuid, user_id=user.id)
 
     if not content.strip():

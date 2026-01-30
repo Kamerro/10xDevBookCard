@@ -1,7 +1,7 @@
 from __future__ import annotations
 
-from datetime import datetime, timedelta, timezone
 import re
+from datetime import UTC, datetime, timedelta
 
 import bcrypt
 import jwt
@@ -57,7 +57,7 @@ def authenticate_user(db: Session, email: str, password: str) -> User | None:
 
 
 def create_access_token(*, user_id: str) -> str:
-    now = datetime.now(timezone.utc)
+    now = datetime.now(UTC)
     exp = now + timedelta(minutes=settings.jwt_access_token_exp_minutes)
 
     payload = {
