@@ -37,7 +37,7 @@ Jeśli release zawiera zmianę modeli:
 
 ## Proces wydania (propozycja)
 
-1) Zaktualizuj `.ai/GOVERNANCE.md` jeśli release zmienia zasady/flow/architekturę.
+1) Zaktualizuj `.ai/GOVERNANCE.md` jeśli release zmienia zasady/flow/architekturę. Zawsze zapytaj czy użytkownika o zgodę do naniesienia zmian.
 2) Uruchom checklistę pre-release.
 3) Wypchnij zmiany na `main` (po przejściu CI).
 4) Utwórz tag: `vX.Y.Z`.
