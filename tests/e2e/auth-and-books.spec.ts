@@ -19,7 +19,14 @@ test('register -> redirect to /books -> create book -> add & edit note -> logout
   await page.locator('input[name="password_confirm"]').fill(password);
   await page.getByRole('button', { name: 'Załóż konto' }).click();
 
-  await expect(page).toHaveURL(/\/books/);
+  try {
+    await page.waitForURL(/\/books/, { timeout: 15_000 });
+  } catch {
+    const err = await page.locator('p.error').first().textContent();
+    throw new Error(
+      `Registration did not redirect to /books. Current URL: ${page.url()}${err ? ` | UI error: ${err.trim()}` : ''}`,
+    );
+  }
 
   await page.locator('textarea[name="title"]').fill('E2E Book');
   await page.locator('textarea[name="author"]').fill('E2E Author');
