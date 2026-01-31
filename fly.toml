@@ -1,30 +1,23 @@
-app = "bookcards"
-primary_region = "fra"
+# fly.toml app configuration file generated for 10xdevbookcard-wurmaa on 2026-01-31T01:54:33Z
+#
+# See https://fly.io/docs/reference/configuration/ for information about how to use this file.
+#
+
+app = '10xdevbookcard-wurmaa'
+primary_region = 'ams'
 
 [build]
 
-[deploy]
-  release_command = "alembic upgrade head"
-
 [http_service]
-  internal_port = 8000
+  internal_port = 8080
   force_https = true
-  auto_stop_machines = "stop"
+  auto_stop_machines = 'stop'
   auto_start_machines = true
   min_machines_running = 0
-  processes = ["app"]
-
-[checks]
-  [checks.health]
-    grace_period = "30s"
-    interval = "15s"
-    method = "GET"
-    path = "/"
-    port = 8000
-    timeout = "5s"
-    type = "http"
+  processes = ['app']
 
 [[vm]]
-  memory = "512mb"
-  cpu_kind = "shared"
+  memory = '1gb'
+  cpu_kind = 'shared'
   cpus = 1
+  memory_mb = 256
