@@ -5,10 +5,16 @@ import os
 
 class Settings:
     def __init__(self) -> None:
-        self.database_url = os.environ.get(
+        db_url = os.environ.get(
             "DATABASE_URL",
             "postgresql+psycopg://postgres:postgres@localhost:5432/bookcards",
         )
+        # Fly.io uses postgres:// but SQLAlchemy 2.0 + psycopg3 needs postgresql+psycopg://
+        if db_url.startswith("postgres://"):
+            db_url = db_url.replace("postgres://", "postgresql+psycopg://", 1)
+        elif db_url.startswith("postgresql://"):
+            db_url = db_url.replace("postgresql://", "postgresql+psycopg://", 1)
+        self.database_url = db_url
 
         self.jwt_secret_key = os.environ.get("SECRET_KEY", "change-me")
         self.jwt_algorithm = os.environ.get("JWT_ALGORITHM", "HS256")
