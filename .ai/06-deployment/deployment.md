@@ -1,13 +1,13 @@
 # Deployment — BookCards (Fly.io)
 
 > **Najważniejsze dokumenty (source of truth)**
-> - [GOVERNANCE](./GOVERNANCE.md)
-> - [PRD](./prd.md)
+> - [GOVERNANCE](../03-governance/governance.md)
+> - [PRD](../01-product/prd.md)
 
 ## Platforma
 
 - **Fly.io** — tani, prosty, GitHub integration
-- Region: `waw` (Warszawa)
+- Region: `fra` (Frankfurt — najbliżej Polski)
 - Forma: Docker container
 
 ---
@@ -46,7 +46,7 @@ fly apps create bookcards
 ## 3. Utwórz bazę PostgreSQL
 
 ```bash
-fly postgres create --name bookcards-db --region waw
+fly postgres create --name bookcards-db --region fra
 ```
 
 Podłącz bazę do aplikacji:

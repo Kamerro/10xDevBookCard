@@ -1,7 +1,7 @@
 # PRD – BookCards (MVP)
 
 > **Najważniejsze dokumenty (source of truth)**
-> - [GOVERNANCE](./GOVERNANCE.md)
+> - [GOVERNANCE](../03-governance/governance.md)
 > - [PRD](./prd.md)
 
 ## 1. Overview produktu

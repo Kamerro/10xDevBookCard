@@ -1,8 +1,8 @@
 # E2E Tests — BookCards
 
 > **Najważniejsze dokumenty (source of truth)**
-> - [GOVERNANCE](./GOVERNANCE.md)
-> - [PRD](./prd.md)
+> - [GOVERNANCE](../03-governance/governance.md)
+> - [PRD](../01-product/prd.md)
 
 ## Cel
 
