@@ -1,8 +1,8 @@
 # After Each Change — CI Green Checklist
 
 > **Najważniejsze dokumenty (source of truth)**
-> - [GOVERNANCE](./GOVERNANCE.md)
-> - [PRD](./prd.md)
+> - [GOVERNANCE](./governance.md)
+> - [PRD](../01-product/prd.md)
 
 Ten dokument to **checklista**, którą masz wykonać po każdej zmianie (fix/update/feature), żeby pipeline CI/CD przeszedł.
 

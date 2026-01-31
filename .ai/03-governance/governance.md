@@ -1,8 +1,8 @@
 # GOVERNANCE — BookCards (Release 1.0)
 
 > **Najważniejsze dokumenty (AI + Product)**
-> - [GOVENRANCE](obecny plik.)
-> - [PRD](./prd.md)
+> - [GOVERNANCE](./governance.md)
+> - [PRD](../01-product/prd.md)
 
 ## Meta
 
@@ -70,7 +70,7 @@ Ten dokument jest **najważniejszym kontraktem** dla prac nad repo. Każda zmian
 
 ## Bezpieczeństwo i CI/CD
 
-- Obowiązuje pipeline z `.github/workflows/*` oraz plan w `.ai/cicd-security-plan.md`.
+- Obowiązuje pipeline z `.github/workflows/*` oraz plan w `.ai/05-security/cicd-security-plan.md`.
 - Lint/format: `ruff`.
 - SAST: CodeQL.
 - Dependency audit: `pip-audit`.

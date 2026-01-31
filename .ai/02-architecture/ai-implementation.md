@@ -1,8 +1,8 @@
 # AI Implementation (OpenRouter) — spec techniczna
  
  > **Najważniejsze dokumenty (source of truth)**
- > - [GOVERNANCE](./GOVERNANCE.md)
- > - [PRD](./prd.md)
+ > - [GOVERNANCE](../03-governance/governance.md)
+ > - [PRD](../01-product/prd.md)
  
 ## Gdzie już jest opisane (źródła)
 
