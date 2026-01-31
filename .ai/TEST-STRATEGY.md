@@ -27,7 +27,7 @@ Zdefiniować minimalną strategię testowania dla v1.0 i kierunek pod E2E.
 - SSR routes renderują poprawny HTML
 - Redirecty i ochrona stron
 
-### 4) E2E (później)
+### 4) E2E (później) czyli werja v.2.0
 
 - Playwright / Cypress / Selenium
 - Uruchomienie aplikacji + klikanie
