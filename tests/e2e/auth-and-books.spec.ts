@@ -17,14 +17,36 @@ test('register -> redirect to /books -> create book -> add & edit note -> logout
   await page.locator('input[name="email"]').fill(email);
   await page.locator('input[name="password"]').fill(password);
   await page.locator('input[name="password_confirm"]').fill(password);
+  const registerResponsePromise = page.waitForResponse(
+    (r) => r.url().includes('/register') && r.request().method() === 'POST',
+    { timeout: 15_000 },
+  );
+
   await page.getByRole('button', { name: 'Załóż konto' }).click();
+
+  let registerStatus: number | null = null;
+  try {
+    const resp = await registerResponsePromise;
+    registerStatus = resp.status();
+  } catch {
+    registerStatus = null;
+  }
 
   try {
     await page.waitForURL(/\/books/, { timeout: 15_000 });
   } catch {
-    const err = await page.locator('p.error').first().textContent();
+    let errText: string | null = null;
+    try {
+      const errLocator = page.locator('p.error').first();
+      if (await errLocator.count()) {
+        errText = (await errLocator.textContent({ timeout: 500 }))?.trim() ?? null;
+      }
+    } catch {
+      errText = null;
+    }
+
     throw new Error(
-      `Registration did not redirect to /books. Current URL: ${page.url()}${err ? ` | UI error: ${err.trim()}` : ''}`,
+      `Registration did not redirect to /books. Current URL: ${page.url()} | POST /register status: ${registerStatus ?? 'unknown'}${errText ? ` | UI error: ${errText}` : ''}`,
     );
   }
 
