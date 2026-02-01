@@ -13,7 +13,7 @@ docker run --name bookcards-postgres `
 docker start bookcards-postgres
 $env:DATABASE_URL="postgresql+psycopg://bookcards:bookcards@localhost:5432/bookcards"
 $env:SECRET_KEY="xxyyaa"
-
+$env:OPENROUTER_API_KEY="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"
 .\.venv\Scripts\Activate.ps1
 python -m pip install -r requirements.txt
 
