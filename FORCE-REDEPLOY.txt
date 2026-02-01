@@ -1,0 +1,40 @@
+# Force Redeploy Commands
+
+## Problem: Stary template się pokazuje po deployu
+
+## Rozwiązania:
+
+### 1. Force redeploy z czyszczeniem cache
+```bash
+fly deploy --strategy=immediate
+```
+
+### 2. Jeśli nie działa - usuń maszynę i stwórz nową
+```bash
+fly machines stop --app=10xdevbookcard-wurmaa
+fly machines start --app=10xdevbookcard-wurmaa
+```
+
+### 3. Ostatecznie - usuń i redeployuj
+```bash
+fly apps destroy 10xdevbookcard-wurmaa
+fly launch --copy-config
+fly deploy
+```
+
+### 4. Sprawdź czy pliki są w kontenerze
+```bash
+fly ssh console
+ls -la /app/templates/auth/
+cat /app/templates/auth/auth_combined.html
+```
+
+### 5. Sprawdź logi
+```bash
+fly logs --recent
+```
+
+## Debugowanie:
+- Sprawdź czy auth_combined.html istnieje w kontenerze
+- Sprawdź czy routes faktycznie używają nowego template
+- Sprawdź czy nie ma błędów w logach

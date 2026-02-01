@@ -1,0 +1,169 @@
+# 🚀 Fly.io Setup w PowerShell
+
+## 1. Instalacja Fly CLI
+
+### Opcja A: Przez PowerShell (recommended)
+```powershell
+# Uruchom jako Administrator
+Set-ExecutionPolicy -ExecutionPolicy RemoteSigned -Scope CurrentUser
+
+# Pobierz i zainstaluj Fly CLI
+iwr https://fly.io/install.ps1 -useb | iex
+```
+
+### Opcja B: Manualnie
+1. Pobierz z: https://github.com/superfly/flyctl/releases
+2. Rozpakuj do folderu (np. `C:\flyctl`)
+3. Dodaj do PATH:
+```powershell
+# Tymczasowo dla sesji
+$env:PATH += ";C:\flyctl"
+
+# Trwałe dodanie do PATH
+[Environment]::SetEnvironmentVariable("PATH", $env:PATH + ";C:\flyctl", "User")
+```
+
+## 2. Weryfikacja instalacji
+```powershell
+flyctl version
+```
+
+## 3. Logowanie do Fly.io
+```powershell
+# Otworzy przeglądarkę do logowania
+flyctl auth login
+
+# Lub z tokenem (jeśli masz)
+flyctl auth token
+```
+
+## 4. Konfiguracja projektu
+```powershell
+# Przejdź do folderu projektu
+cd "C:\Users\kamil\Bookcards\10xDevBookCard"
+
+# Sprawdź status
+flyctl status
+
+# Sprawdź aplikacje
+flyctl apps list
+```
+
+## 5. Deploy
+```powershell
+# Standardowy deploy
+flyctl deploy
+
+# Force deploy (bez cache)
+flyctl deploy --strategy=immediate
+
+# Deploy z verbose output
+flyctl deploy --verbose
+```
+
+## 6. Debugowanie i logi
+```powershell
+# Sprawdź logi
+flyctl logs --recent
+
+# Logi w czasie rzeczywistym
+flyctl logs --follow
+
+# Sprawdź status maszyny
+flyctl status
+
+# SSH do kontenera
+flyctl ssh console
+
+# Sprawdź pliki w kontenerze
+flyctl ssh console --command "ls -la /app/templates/auth/"
+```
+
+## 7. Zarządzanie sekretami
+```powershell
+# Ustaw sekrety
+flyctl secrets set SECRET_KEY="twoj-klucz"
+flyctl secrets set OPENROUTER_API_KEY="twoj-api-key"
+
+# Sprawdź sekrety (bez wartości)
+flyctl secrets list
+
+# Usuń sekret
+flyctl secrets remove SECRET_KEY
+```
+
+## 8. Zarządzanie aplikacją
+```powershell
+# Otwórz aplikację w przeglądarce
+flyctl open
+
+# Zatrzymaj aplikację
+flyctl apps stop
+
+# Uruchom aplikację
+flyctl apps start
+
+# Restart aplikacji
+flyctl apps restart
+```
+
+## 9. Rozwiązywanie problemów
+
+### Problem: "flyctl nie jest rozpoznawany"
+```powershell
+# Sprawdź PATH
+echo $env:PATH
+
+# Dodaj ręcznie
+$env:PATH += ";C:\flyctl"
+```
+
+### Problem: "Permission denied"
+```powershell
+# Uruchom PowerShell jako Administrator
+# Ustaw politykę wykonawczą
+Set-ExecutionPolicy -ExecutionPolicy RemoteSigned -Scope CurrentUser
+```
+
+### Problem: "SSL/TLS certificate error"
+```powershell
+# Zignoruj błąd certyfikatu (tylko tymczasowo!)
+[System.Net.ServicePointManager]::SecurityProtocol = [System.Net.SecurityProtocolType]::Tls12
+```
+
+## 10. Przydatne aliasy w PowerShell
+```powershell
+# Dodaj do PowerShell Profile ($PROFILE)
+Set-Alias -Name fly -Value flyctl
+
+# Funkcje pomocnicze
+function fly-logs { flyctl logs --recent }
+function fly-deploy { flyctl deploy --strategy=immediate }
+function fly-ssh { flyctl ssh console }
+function fly-status { flyctl status }
+```
+
+## 11. PowerShell Profile (opcjonalnie)
+```powershell
+# Otwórz profile
+notepad $PROFILE
+
+# Dodaj aliasy i funkcje
+Set-Alias -Name fly -Value flyctl
+function fly-logs { flyctl logs --recent }
+function fly-deploy { flyctl deploy --strategy=immediate }
+function fly-ssh { flyctl ssh console }
+function fly-status { flyctl status }
+
+# Przeładuj profile
+. $PROFILE
+```
+
+## 🎯 Szybki start (po konfiguracji):
+```powershell
+cd "C:\Users\kamil\Bookcards\10xDevBookCard"
+flyctl deploy --strategy=immediate
+flyctl open
+```
+
+Gotowe! Teraz możesz zarządzać Fly.io prosto z PowerShell! 🚀
