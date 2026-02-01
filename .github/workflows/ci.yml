@@ -23,20 +23,20 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-      - name: Require .ai/GOVERNANCE.md
+      - name: Require .ai/governance.md
         shell: bash
         run: |
           set -euo pipefail
-          test -f .ai/GOVERNANCE.md
-          grep -q "^# GOVERNANCE" .ai/GOVERNANCE.md
-          grep -q "^[- ]*\*\*Governance Version:\*\*" .ai/GOVERNANCE.md
+          test -f .ai/governance.md
+          grep -q "^# governance" .ai/governance.md
+          grep -q "^[- ]*\*\*governance Version:\*\*" .ai/governance.md
 
       - name: Print governance header
         shell: bash
         run: |
           set -euo pipefail
-          echo "--- .ai/GOVERNANCE.md (header) ---"
-          head -n 40 .ai/GOVERNANCE.md
+          echo "--- .ai/governance.md (header) ---"
+          head -n 40 .ai/governance.md
 
   lint:
     name: Lint & Format
