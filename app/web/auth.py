@@ -16,7 +16,7 @@ router = APIRouter()
 @router.get("/login", response_class=HTMLResponse)
 async def login_page(request: Request) -> HTMLResponse:
     context = {"request": request, "title": "Logowanie"}
-    return templates.TemplateResponse("auth/auth_combined.html", context)
+    return templates.TemplateResponse("auth/login.html", context)
 
 
 @router.post("/login", response_model=None)
@@ -29,7 +29,7 @@ async def login_submit(
     user = authenticate_user(db, email=email, password=password)
     if user is None:
         context = {"request": request, "title": "Logowanie", "error_login": "Nieprawidłowy email lub hasło."}
-        return templates.TemplateResponse("auth/auth_combined.html", context)
+        return templates.TemplateResponse("auth/login.html", context)
 
     token = create_access_token(user_id=str(user.id))
 
@@ -46,7 +46,7 @@ async def login_submit(
 @router.get("/register", response_class=HTMLResponse)
 async def register_page(request: Request) -> HTMLResponse:
     context = {"request": request, "title": "Rejestracja"}
-    return templates.TemplateResponse("auth/auth_combined.html", context)
+    return templates.TemplateResponse("auth/register.html", context)
 
 
 @router.post("/register", response_model=None)
@@ -63,7 +63,7 @@ async def register_submit(
             "title": "Rejestracja",
             "error_register": "Hasła nie są takie same.",
         }
-        return templates.TemplateResponse("auth/auth_combined.html", context)
+        return templates.TemplateResponse("auth/register.html", context)
 
     try:
         user = create_user(db, email=email, password=password)
@@ -81,7 +81,7 @@ async def register_submit(
             msg = "Hasło musi zawierać co najmniej 1 znak specjalny."
 
         context = {"request": request, "title": "Rejestracja", "error_register": msg}
-        return templates.TemplateResponse("auth/auth_combined.html", context)
+        return templates.TemplateResponse("auth/register.html", context)
 
     token = create_access_token(user_id=str(user.id))
     response = RedirectResponse(url="/books", status_code=303)
